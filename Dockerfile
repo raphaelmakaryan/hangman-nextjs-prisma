@@ -7,7 +7,7 @@ WORKDIR /app
 
 ######################################
 # First stage (build the app)
-FROM base AS builder
+FROM base as builder
 # Copy project file
 COPY . .
 # Run npm install
@@ -21,10 +21,14 @@ RUN npm run build
 # Second stage (build the production container)
 FROM base AS runner
 
-# Here we copy a file from "builder" stage to the current "runner" stage
+# our base image "node" has a user named "node"
+# After that line, all command run inside the conatiner will be launched by the "node" user 
+USER node
+
 COPY --from=builder /app/.next/standalone/ /app/
 COPY --from=builder /app/public/ /app/public/
 COPY --from=builder /app/.next/static/ /app/.next/static/
+
 # The container will expose port 3000
 EXPOSE 3000
 
