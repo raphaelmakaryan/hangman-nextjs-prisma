@@ -7,7 +7,7 @@ WORKDIR /app
 
 ######################################
 # First stage (build the app)
-FROM base as builder
+FROM base AS builder
 # Copy project file
 COPY . .
 # Run npm install
@@ -23,11 +23,12 @@ FROM base AS runner
 
 # our base image "node" has a user named "node"
 # After that line, all command run inside the conatiner will be launched by the "node" user 
+#RUN useradd -ms /bin/bash node
 USER node
 
-COPY --from=builder /app/.next/standalone/ /app/
-COPY --from=builder /app/public/ /app/public/
-COPY --from=builder /app/.next/static/ /app/.next/static/
+COPY --from=builder --chown=node:node /app/.next/standalone/ /app/
+COPY --from=builder --chown=node:node /app/public/ /app/public/
+COPY --from=builder --chown=node:node /app/.next/static/ /app/.next/static/
 
 # The container will expose port 3000
 EXPOSE 3000
