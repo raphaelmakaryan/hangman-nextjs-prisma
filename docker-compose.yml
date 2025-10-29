@@ -1,0 +1,11 @@
+# Declare all services use by our application
+services:
+  # Declare a service named "web"
+  web:
+    # We obtain its image by building the Dockerfile present in the same directory
+    build: .
+    # Our container will expose the port 3000 
+    # we bind the port 3000 of our machine to the port 3000 of the container
+    # This will allow use to access our service using "http://localhost:3000" 
+    ports:
+      - 3000:3000
