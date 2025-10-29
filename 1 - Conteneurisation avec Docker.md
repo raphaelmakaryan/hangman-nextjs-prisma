@@ -72,10 +72,10 @@ Cela vous permettra non seulement de personnaliser votre image, mais aussi de mi
 ### Creer un dockerfile
 
 ```dockerfile
-# We start for a docker image named "node:20-slim" 
+# We start for a docker image named "node:22-slim" 
 # see https://hub.docker.com/_/node
 # We use base as an alias name
-FROM node:20-slim AS base
+FROM node:22-slim AS base
 
 # We'll work inside the directory /app
 WORKDIR /app
@@ -198,10 +198,10 @@ Il est recommandé, en suivant les bonnes pratiques, de ne pas inclure les sourc
 Pour répondre à cette exigence, nous allons utiliser un build multi-stage (Voir [https://docs.docker.com/build/building/multi-stage/])
 
 ```dockerfile
-# We start for a docker image named "node:20-slim"
+# We start for a docker image named "node:22-slim"
 # see https://hub.docker.com/_/node
 # We use base as an alias name
-FROM node:20-slim AS base
+FROM node:22-slim AS base
 # We'll work inside the directory /app
 WORKDIR /app
 
@@ -251,10 +251,10 @@ Cependant, si une personne malveillante parvient à exploiter une faille dans vo
 Pour cette raison, il est impératif de ne jamais utiliser l'utilisateur root pour exécuter une application en environnement de production. Préférez l'utilisation d'un utilisateur avec des privilèges limités afin de minimiser les risques en cas de compromission.
 
 ```dockerfile
-# We start for a docker image named "node:20-slim"
+# We start for a docker image named "node:22-slim"
 # see https://hub.docker.com/_/node
 # We use base as an alias name
-FROM node:20-slim AS base
+FROM node:22-slim AS base
 # We'll work inside the directory /app
 WORKDIR /app
 
@@ -291,12 +291,17 @@ EXPOSE 3000
 CMD node server.js
 ```
 
-## [Optionnel] Process Control System
+## [Optionnel] Utilisation d’un système de contrôle de processus
 
-Une bonne partique est egalement d'utiliser un "Process Control System" pour lancer notre application dans le container.
+Dans un environnement de conteneur, il peut être pertinent d’utiliser un système de contrôle de processus (ou Process Control System) afin d’assurer une meilleure résilience de votre application.
 
-Celui-ci aura pour responsabilité de relancer le programme si celui-ci venat à echouer.
+Ce type d’outil a pour rôle principal de surveiller l’exécution des processus à l’intérieur du conteneur et de redémarrer automatiquement ceux-ci en cas d’échec.
+Il devient particulièrement utile lorsque votre conteneur exécute plusieurs processus simultanément, comme un serveur web et un service de file d’attente par exemple.
 
-Pour cela vous pouvez utiliser `Supervisor`
+Dans le cas de notre application Hangman, le conteneur n’exécute qu’un seul processus principal (le serveur Node.js).
+L’utilisation d’un tel système n’est donc pas indispensable, mais elle constitue un excellent exercice pratique pour comprendre les mécanismes de supervision et de redémarrage automatique au sein d’un conteneur.
 
-Voir Documentation de Supervisor : http://supervisord.org/
+L’un des outils les plus couramment utilisés pour ce type de tâche est Supervisor.
+Cet utilitaire permet de définir les programmes à exécuter, leurs paramètres, ainsi que les actions à entreprendre en cas d’arrêt inattendu.
+
+Pour en savoir plus sur son installation et sa configuration, vous pouvez consulter la documentation officielle :
