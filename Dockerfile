@@ -23,7 +23,6 @@ FROM base AS runner
 
 # our base image "node" has a user named "node"
 # After that line, all command run inside the conatiner will be launched by the "node" user 
-#RUN useradd -ms /bin/bash node
 USER node
 
 COPY --from=builder --chown=node:node /app/.next/standalone/ /app/
