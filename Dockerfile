@@ -1,7 +1,7 @@
 # We start for a docker image named "node:20-slim"
 # see https://hub.docker.com/_/node
 # We use base as an alias name
-FROM node:20-slim AS base
+FROM node:20 AS base
 # We'll work inside the directory /app
 WORKDIR /app
 
